@@ -1,0 +1,112 @@
+[
+    {
+        "id": 1,
+        "nome": "Smartphone Galaxy S23",
+        "categoria": "Eletrônicos",
+        "preco": 3499.99,
+        "marca": "Samsung",
+        "descricao": "Smartphone com tela AMOLED 6.1, 128GB de armazenamento",
+        "estoque": 45,
+        "avaliacao": 4.7,
+        "tags": ["smartphone", "android", "samsung", "5g"]
+    },
+    {
+        "id": 2,
+        "nome": "Notebook Inspiron 15",
+        "categoria": "Informática",
+        "preco": 4299.90,
+        "marca": "Dell",
+        "descricao": "Notebook Intel Core i5, 16GB RAM, SSD 512GB",
+        "estoque": 22,
+        "avaliacao": 4.5,
+        "tags": ["notebook", "windows", "dell", "intel"]
+    },
+    {
+        "id": 3,
+        "nome": "Mouse MX Master 3S",
+        "categoria": "Informática",
+        "preco": 549.90,
+        "marca": "Logitech",
+        "descricao": "Mouse sem fio para produtividade",
+        "estoque": 80,
+        "avaliacao": 4.9,
+        "tags": ["mouse", "logitech", "wireless"]
+    },
+    {
+        "id": 4,
+        "nome": "Teclado Mecânico K552",
+        "categoria": "Informática",
+        "preco": 279.90,
+        "marca": "Redragon",
+        "descricao": "Teclado mecânico RGB switch azul",
+        "estoque": 35,
+        "avaliacao": 4.6,
+        "tags": ["teclado", "gamer", "rgb"]
+    },
+    {
+        "id": 5,
+        "nome": "Monitor UltraWide 29",
+        "categoria": "Informática",
+        "preco": 1399.99,
+        "marca": "LG",
+        "descricao": "Monitor UltraWide Full HD",
+        "estoque": 15,
+        "avaliacao": 4.8,
+        "tags": ["monitor", "ultrawide", "lg"]
+    },
+    {
+        "id": 6,
+        "nome": "Fone Bluetooth WH-CH520",
+        "categoria": "Áudio",
+        "preco": 299.99,
+        "marca": "Sony",
+        "descricao": "Fone bluetooth com até 50 horas de bateria",
+        "estoque": 58,
+        "avaliacao": 4.4,
+        "tags": ["fone", "bluetooth", "sony"]
+    },
+    {
+        "id": 7,
+        "nome": "Smart TV 50 Polegadas",
+        "categoria": "Eletrônicos",
+        "preco": 2499.90,
+        "marca": "Samsung",
+        "descricao": "TV 4K UHD com sistema Tizen",
+        "estoque": 10,
+        "avaliacao": 4.7,
+        "tags": ["tv", "4k", "smarttv"]
+    },
+    {
+        "id": 8,
+        "nome": "Kindle 11ª Geração",
+        "categoria": "Livros e Leitura",
+        "preco": 499.00,
+        "marca": "Amazon",
+        "descricao": "Leitor digital com iluminação embutida",
+        "estoque": 42,
+        "avaliacao": 4.8,
+        "tags": ["kindle", "ebook", "amazon"]
+    },
+    {
+        "id": 9,
+        "nome": "Cadeira Gamer XT Racer",
+        "categoria": "Móveis",
+        "preco": 899.90,
+        "marca": "XTRacer",
+        "descricao": "Cadeira ergonômica para escritório e games",
+        "estoque": 18,
+        "avaliacao": 4.2,
+        "tags": ["cadeira", "gamer", "ergonomia"]
+    },
+    {
+        "id": 10,
+        "nome": "SSD NVMe 1TB",
+        "categoria": "Informática",
+        "preco": 429.90,
+        "marca": "Kingston",
+        "descricao": "SSD NV2 NVMe PCIe 4.0",
+        "estoque": 65,
+        "avaliacao": 4.8,
+        "tags": ["ssd", "armazenamento", "nvme"]
+    }
+]
