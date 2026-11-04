@@ -48,11 +48,6 @@ Desenvolver um pipeline de dados capaz de extrair informações de diferentes fo
 
 ---
 
-
-
-## Arquitetura do Projeto
-
-
 ## Arquitetura do projeto
 
 O pipeline segue uma arquitetura baseada no conceito de Medallion Architecture, organizando os dados em camadas de processamento.
