@@ -52,10 +52,13 @@ Desenvolver um pipeline de dados capaz de extrair informações de diferentes fo
 
 ## Arquitetura do Projeto
 
+O diagrama abaixo representa o fluxo de processamento dos dados, desde a extração das fontes de origem até o armazenamento na camada Silver
+
+![Fluxograma ETL](docs/architecture/etl-flow.png)
+*Diagrama desenvolvido utilizando Draw.io.*
 
 
 O pipeline está sendo desenvolvido seguindo as seguintes etapas:
-
 
 
 ### 1. Extração (Extract)
