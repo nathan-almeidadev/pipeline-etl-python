@@ -267,4 +267,4 @@ Os arquivos de entrada e os dados processados podem ser encontrados no diretóri
 
 Nathan Luiz Almeida Vieira - Estagiário de Dados 👨‍💻
 
-Desenvolvido como projeto de estudo e prática em **Engenharia de Dados**.
+*Desenvolvido como projeto de estudo e prática em **Engenharia de Dados**.*
