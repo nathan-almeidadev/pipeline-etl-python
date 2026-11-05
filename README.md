@@ -50,55 +50,8 @@ Desenvolver um pipeline de dados capaz de extrair informações de diferentes fo
 
 ## Arquitetura do projeto
 
-O pipeline segue uma arquitetura baseada no conceito de Medallion Architecture, organizando os dados em camadas de processamento.
-
-```mermaid
-flowchart TD
-    subgraph RAW["RAW - Dados de origem"]
-        A["users.csv"]
-        B["products.json"]
-    end
-
-    subgraph ETL["Processamento ETL - Python"]
-        C["Extração dos dados"]
-        D["Transformação e normalização"]
-        E["Validação dos dados"]
-        F["Enriquecimento de CEP"]
-    end
-
-    API["API ViaCEP"]
-
-    subgraph SILVER["SILVER - Arquivos Parquet"]
-        G["users.parquet"]
-        H["products.parquet"]
-        I["cep_info.parquet"]
-    end
-
-    subgraph GOLD["GOLD - Em desenvolvimento"]
-        J[("PostgreSQL")]
-    end
-
-    A --> C
-    B --> C
-    C --> D
-    D --> E
-    E --> F
-    F <--> API
-    F --> G
-    E --> H
-    F --> I
-    G --> J
-    H --> J
-    I --> J
-
-    style RAW fill:#dbeafe,stroke:#2563eb,color:#1e3a8a
-    style ETL fill:#fef3c7,stroke:#d97706,color:#78350f
-    style SILVER fill:#dcfce7,stroke:#16a34a,color:#14532d
-    style GOLD fill:#f3e8ff,stroke:#9333ea,color:#581c87
-```
 
 O pipeline está sendo desenvolvido seguindo as seguintes etapas:
-
 
 
 ### 1. Extração (Extract)
