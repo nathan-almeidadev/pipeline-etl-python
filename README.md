@@ -1,270 +1,232 @@
 # Pipeline ETL com Python
 
-
-
-Projeto de Engenharia de Dados desenvolvido com Python, com o objetivo de construir um pipeline ETL para extração, transformação, validação e armazenamento de dados fictícios de clientes e produtos.
-
-
-
-O projeto utiliza uma arquitetura baseada em camadas (**Medallion Architecture**), contemplando as camadas **Silver** e **Gold**.
-
-
-
----
-
-
-
-## Objetivo
-
-
-
-Desenvolver um pipeline de dados capaz de extrair informações de diferentes fontes, realizar tratamentos e validações, enriquecer dados de clientes por meio de uma API externa e disponibilizar os dados estruturados para análises posteriores.
-
-
-
----
-
-
-
-## Tecnologias Utilizadas
-
-
-
-- Python
-
-- Pandas
-
-- PyArrow / Parquet
-
-- API ViaCEP
-
-- Git e GitHub
-
-- PostgreSQL *(planejado)*
-
-- Docker *(planejado)*
-
-
-
----
-
-
-
-## Arquitetura do Projeto
-
-O diagrama abaixo representa o fluxo de processamento dos dados, desde a extração das fontes de origem até o armazenamento na camada Silver
-
-![Fluxograma ETL](docs/architecture/etl-flow.png)
-*Diagrama desenvolvido utilizando Draw.io.*
-
-
-O pipeline está sendo desenvolvido seguindo as seguintes etapas:
-
-
-### 1. Extração (Extract)
-
-
-
-- Leitura dos dados fictícios de clientes armazenados em CSV.
-
-- Leitura dos dados de produtos armazenados em JSON.
-
-
-
-### 2. Transformação (Transform)
-
-
-
-- Extração dos CEPs dos registros de clientes.
-
-- Consulta à API ViaCEP para obtenção de informações de endereço.
-
-- Normalização e tratamento dos dados.
-
-
-
-### 3. Validação (Validate)
-
-
-
-- Verificação da consistência dos dados.
-
-- Validação dos registros após os processos de transformação.
-
-
-
-### 4. Camada Silver
-
-
-
-Os dados tratados, normalizados e validados são armazenados em arquivos Parquet:
-
-
-
-- `users.parquet`
-
-- `products.parquet`
-
-- `cep_info.parquet`
-
-
-
-### 5. Camada Gold (em desenvolvimento)
-
-
-
-A próxima etapa consiste em utilizar PostgreSQL, executado em Docker, para estruturar e disponibilizar os dados enriquecidos para consultas e análises.
-
-
-
----
-
-
-
-## Estrutura do Projeto
-
-
-
-A estrutura de diretórios será documentada conforme a evolução do desenvolvimento.
-
-
+Pipeline de Engenharia de Dados que extrai dados fictícios de usuários e
+produtos, enriquece os usuários com informações de endereço da API ViaCEP,
+normaliza os arquivos para Parquet e disponibiliza os dados em PostgreSQL para
+consultas analíticas.
+
+O projeto utiliza uma organização em camadas inspirada na **Medallion
+Architecture**:
 
 ```text
-
-projeto-etl/
-
-│
-
-├── data/
-
-│   ├── raw/
-
-│   ├── silver/
-
-│   └── gold/
-
-│
-
-├── src/
-
-│   ├── extract/
-
-│   ├── transform/
-
-│   ├── validate/
-
-│   └── load/
-
-│
-
-├── tests/
-
-│
-
-├── requirements.txt
-
-├── README.md
-
-└── .gitignore
-
+Bronze (dados de origem) -> Silver (dados normalizados) -> Gold (consultas enriquecidas)
 ```
 
+## Objetivos
+
+- Ler dados de usuários em CSV e produtos em JSON.
+- Consultar a API ViaCEP a partir dos CEPs dos usuários.
+- Armazenar os dados de origem e os dados enriquecidos.
+- Remover duplicidades e normalizar os dados em arquivos Parquet.
+- Carregar a camada Silver em tabelas PostgreSQL.
+- Disponibilizar consultas SQL para combinar usuários e informações de CEP.
+
+## Tecnologias
+
+- Python
+- Pandas
+- Requests
+- PyArrow e Parquet
+- PostgreSQL 16
+- Psycopg2
+- Docker e Docker Compose
+- Jupyter Notebook
+
+## Arquitetura e fluxo
+
+![Fluxograma ETL](docs/architecture/etl-flow.png)
+
+O fluxo principal é composto pelas seguintes etapas:
+
+1. **Extração:** os arquivos `users.csv` e `products.json` são lidos da camada
+   Bronze.
+2. **Enriquecimento:** os CEPs dos usuários são consultados na API ViaCEP. Os
+   resultados válidos são salvos em `cep_info.csv`.
+3. **Normalização:** os arquivos CSV e JSON da Bronze são convertidos para
+   Parquet, com remoção de duplicidades e conversão de listas para texto quando
+   necessário.
+4. **Carga:** os arquivos Parquet da Silver são carregados em tabelas
+   PostgreSQL.
+5. **Consultas Gold:** os arquivos SQL prontos combinam usuários e endereços e
+   disponibilizam visões de contato e localização.
+
+## Estrutura do projeto
 
+```text
+.
+├── data/
+│   ├── 01-bronze_raw/          # Fontes de entrada e resposta da ViaCEP
+│   ├── 02-silver_validated/    # Dados normalizados em Parquet
+│   └── 03-gold_enriched/      # Consultas SQL para análise
+├── data_view/
+│   └── dt_view.ipynb           # Exploração e visualização dos dados
+├── docs/architecture/
+│   ├── etl-flow.drawio         # Diagrama editável
+│   └── etl-flow.png            # Diagrama exportado
+├── src/
+│   ├── get_data.py             # Consulta e grava dados da ViaCEP
+│   ├── normalize_data.py       # Bronze -> Silver
+│   ├── db.py                   # Conexão e operações no PostgreSQL
+│   └── populate_db.py          # Silver -> PostgreSQL
+├── docker-compose.yml
+├── requirements.txt
+└── README.md
+```
 
----
+## Pré-requisitos
 
+- Python 3.10 ou superior
+- Docker e Docker Compose
+- Acesso à internet para consultar a API ViaCEP
 
+## Instalação
 
-## Como Executar
+Clone o repositório, crie um ambiente virtual e instale as dependências:
 
+```bash
+git clone https://github.com/nathan-almeidadev/pipeline-etl-python.git
+cd pipeline-etl-python
 
+python -m venv .venv
+source .venv/bin/activate       # Linux/macOS
+# .venv\Scripts\activate        # Windows
 
-As instruções de instalação e execução serão adicionadas conforme a evolução do projeto.
+pip install -r requirements.txt
+```
 
+## Execução
 
+### 1. Iniciar o PostgreSQL
 
----
+```bash
+docker compose up -d db
+```
 
+O banco fica disponível em `localhost:5432` com as configurações definidas no
+`docker-compose.yml`:
 
+| Configuração | Valor |
+|---|---|
+| Banco | `db_etl_viacep` |
+| Usuário | `postgres` |
+| Senha | `viacep_etl` |
+| Porta | `5432` |
 
-## Dados Utilizados
+Esses valores são apropriados para o ambiente local de demonstração. Em
+produção, devem ser substituídos por variáveis de ambiente ou um gerenciador
+de segredos.
 
+### 2. Gerar os dados enriquecidos de CEP
 
+Execute a partir da raiz do projeto:
 
-O projeto utiliza conjuntos de dados inteiramente fictícios, gerados artificialmente para fins de estudo, desenvolvimento e demonstração.
+```bash
+python src/get_data.py
+```
 
+O script lê os CEPs de `data/01-bronze_raw/users.csv`, consulta a ViaCEP e
+atualiza `data/01-bronze_raw/cep_info.csv`. CEPs inválidos ou não encontrados
+são ignorados.
 
+### 3. Normalizar os dados para Silver
 
-Os arquivos de entrada e os dados processados podem ser encontrados no diretório `data/` do projeto.
+```bash
+python src/normalize_data.py
+```
 
+O comando processa os arquivos da Bronze e gera:
 
+- `data/02-silver_validated/users.parquet`
+- `data/02-silver_validated/products.parquet`
+- `data/02-silver_validated/cep_info.parquet`
 
----
+### 4. Carregar os dados no PostgreSQL
 
+```bash
+python src/populate_db.py
+```
 
+O script cria as tabelas `users`, `products` e `cep_info` caso ainda não
+existam e insere os registros dos arquivos Parquet.
 
-## Status do Projeto
+### 5. Executar consultas Gold
 
+Com as tabelas carregadas, as consultas em
+`data/03-gold_enriched/` podem ser executadas em qualquer cliente PostgreSQL:
 
+- `users.sql`: consulta todos os usuários.
+- `products.sql`: consulta todos os produtos.
+- `users_cep_info.sql`: relaciona usuários às informações completas de endereço.
+- `users_contact_info.sql`: consolida dados de contato e localização.
 
-### Concluído ✅
+Para encerrar o banco:
 
+```bash
+docker compose down
+```
 
+Para remover também os dados persistidos no volume local:
 
-- [x] Extração dos dados de clientes (CSV)
+```bash
+docker compose down -v
+```
 
-- [x] Extração dos dados de produtos (JSON)
+## Camadas de dados
 
-- [x] Enriquecimento dos dados de clientes com a API ViaCEP
+### Bronze
 
-- [x] Normalização dos dados
+Contém os dados de origem, sem o tratamento principal do pipeline:
 
-- [x] Validação dos dados
+- `users.csv`: dados cadastrais e de contato dos usuários.
+- `products.json`: catálogo de produtos, incluindo listas de tags.
+- `cep_info.csv`: resposta tabular da consulta à ViaCEP.
 
-- [x] Armazenamento da camada Silver em Parquet
+### Silver
 
+Contém os dados convertidos para Parquet, com duplicidades removidas e colunas
+com listas convertidas para texto quando necessário. O formato Parquet facilita
+o armazenamento colunar e a leitura posterior.
 
+### Gold
 
-### Em Desenvolvimento 🚧
+Contém consultas SQL orientadas ao consumo analítico. As consultas fazem `JOIN`
+entre `users` e `cep_info` pelo campo `cep`, permitindo analisar localização,
+contato, estado, região e código IBGE.
 
+## Dados e limitações conhecidas
 
+Os dados do projeto são fictícios e servem para estudo e demonstração. A
+consulta à ViaCEP depende de conectividade externa e o carregamento atual usa
+as credenciais locais definidas no Docker Compose e no script de carga. Para
+um ambiente de produção, recomenda-se parametrizar credenciais, adicionar
+tratamento de timeout/retries na API, validar esquemas e tornar a carga
+idempotente.
 
-- [ ] Implementação da camada Gold com PostgreSQL
+## Status
 
-- [ ] Containerização com Docker
+### Implementado
 
-- [ ] Documentação completa do pipeline
+- [x] Extração de usuários em CSV.
+- [x] Extração de produtos em JSON.
+- [x] Enriquecimento de CEPs com a ViaCEP.
+- [x] Normalização e remoção de duplicidades.
+- [x] Geração de arquivos Parquet na camada Silver.
+- [x] Configuração do PostgreSQL com Docker Compose.
+- [x] Carga dos arquivos Silver em tabelas PostgreSQL.
+- [x] Consultas SQL para a camada Gold.
+- [x] Notebook para exploração dos dados.
 
+### Evoluções recomendadas
 
-
----
-
-
-
-## Próximos Passos
-
-
-
-1. Estruturar banco PostgreSQL para a camada Gold.
-
-2. Criar scripts de carga dos dados tratados.
-
-3. Containerizar a aplicação utilizando Docker.
-
-4. Automatizar a execução do pipeline.
-
-5. Implementar testes automatizados.
-
-6. Criar dashboards e consultas analíticas.
-
-
-
----
-
-
+- [ ] Adicionar testes automatizados.
+- [ ] Usar variáveis de ambiente para configurações e credenciais.
+- [ ] Implementar logging estruturado, timeout e retries para a API.
+- [ ] Criar validações de esquema e métricas de qualidade.
+- [ ] Automatizar o pipeline com um orquestrador.
+- [ ] Criar dashboards e consultas analíticas adicionais.
 
 ## Autor
 
-Nathan Luiz Almeida Vieira - Estagiário de Dados 👨‍💻
+Nathan Luiz Almeida Vieira
 
-*Desenvolvido como projeto de estudo e prática em **Engenharia de Dados**.*
+Projeto desenvolvido para estudo e prática de Engenharia de Dados.
